@@ -70,17 +70,19 @@ $batch->resetOffset('my_migration');
 ```php
 // In your .module file or service
 function mymodule_cron() {
-  $batchService = \Drupal::service('migrate_batch');
-  // Process 100 items every hour
-  $batchService->next('my_custom_migration', 100);
+  /** @var \Drupal\migrate_batch\Service\MigrateBatchService $batch */
+  $batch = \Drupal::service('migrate_batch');
+  // Process 100 items per cron run.
+  $batch->next('my_custom_migration', 100);
 }
 ```
 
 **In a controller or form submit:**
 ```php
 public function processBatch() {
-  $batchService = \Drupal::service('migrate_batch');
-  $batchService->next('user_import', 50);
+  /** @var \Drupal\migrate_batch\Service\MigrateBatchService $batch */
+  $batch = \Drupal::service('migrate_batch');
+  $batch->next('user_import', 50);
   \Drupal::messenger()->addMessage('Processed next 50 users.');
 }
 ```
