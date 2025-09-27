@@ -119,6 +119,17 @@ class MigrateBatchService {
   }
 
   /**
+   * Set the total count by migration ID.
+   *
+   * Helper func to provide other ways to set the total other than from the
+   * plugin instance to prevent time-outs.
+   */
+  public function setTotalRows(string $migrationId, int $total): MigrateBatchService {
+    $this->totalRowsCache[$migrationId] = $total;
+    return $this;
+  }
+
+  /**
    * Set offset for a migration by ID.
    */
   public function setOffset(string $migrationId, int $offset): MigrateBatchService {
