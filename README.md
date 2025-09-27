@@ -25,24 +25,24 @@ This module extends Drupal's migration system by providing commands to process m
 You can use the `migrate_batch` service directly in your custom modules, hooks, or other Drupal code:
 
 ```php
-// Get the service
-$migrateBatchService = \Drupal::service('migrate_batch');
+/** @var \Drupal\migrate_batch\Service\MigrateBatchService $batch */
+$batch = \Drupal::service('migrate_batch');
 
-// Process a batch of default item amount
-$migrateBatchService->next('my_migration');
+// Process a batch of default item amount (20).
+$batch->next('my_migration');
 
-// Process another batch of 50 items (continues from where it left off)
-$migrateBatchService->next('my_migration', 50);
+// Process next batch of 50 items.
+$batch->next('my_migration', 50);
 
-// Check current offset
-$offset = $migrateBatchService->getOffset('my_migration');
+// Check current offset.
+$offset = $batch->getOffset('my_migration');
 echo "Current offset: $offset";
 
-// Set offset to a specific value
-$migrateBatchService->setOffset('my_migration', 100);
+// Set offset to a specific value.
+$batch->setOffset('my_migration', 100);
 
-// Reset offset back to 0
-$migrateBatchService->resetOffset('my_migration');
+// Reset offset back to 0.
+$batch->resetOffset('my_migration');
 ```
 
 **Note:** The service automatically tracks progress using Drupal's State API. Each call to `next()` processes the next batch and advances the offset.
@@ -194,6 +194,7 @@ Use these methods in your source plugin's `initializeIterator()` method to apply
 use Drupal\migrate_batch\Traits\BatchableSourceTrait;
 
 class MySourcePlugin extends SomeBaseClass {
+
   use BatchableSourceTrait;
 
   /**
@@ -234,6 +235,7 @@ For Drupal's `SqlBase` source plugins, override the `query()` method to apply ba
 use Drupal\migrate_batch\Traits\BatchableSourceTrait;
 
 class MySqlSource extends SqlBase {
+
   use BatchableSourceTrait;
 
   public function query() {
