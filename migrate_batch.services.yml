@@ -1,0 +1,6 @@
+services:
+  migrate_batch:
+    class: Drupal\migrate_batch\Service\MigrateBatchService
+    arguments:
+      - '@plugin.manager.migration'
+      - '@state'

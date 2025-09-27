@@ -1,0 +1,7 @@
+name: 'Migrate Batch'
+type: module
+description: 'Provides batch migration processing with offset tracking.'
+package: Migration
+core_version_requirement: '>=10'
+dependencies:
+  - drupal:migrate

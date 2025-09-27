@@ -1,0 +1,4 @@
+administer migrate batch:
+  title: 'Administer migrate batch'
+  description: 'Access the migrate batch states admin interface and manage batch operations.'
+  restrict access: true

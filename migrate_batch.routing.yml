@@ -1,0 +1,31 @@
+migrate_batch.admin_states:
+  path: '/admin/content/migrate/batch-states'
+  defaults:
+    _controller: '\Drupal\migrate_batch\Controller\MigrateBatchController::overview'
+    _title: 'Migrate Batch'
+  requirements:
+    _permission: 'administer migrate batch'
+
+migrate_batch.admin_run:
+  path: '/admin/content/migrate/batch-states/{migrationId}/run'
+  defaults:
+    _controller: '\Drupal\migrate_batch\Controller\MigrateBatchController::run'
+    _title: 'Run Batch'
+  requirements:
+    _permission: 'administer migrate batch'
+
+migrate_batch.admin_reset:
+  path: '/admin/content/migrate/batch-states/{migrationId}/reset'
+  defaults:
+    _controller: '\Drupal\migrate_batch\Controller\MigrateBatchController::reset'
+    _title: 'Reset Batch Offset'
+  requirements:
+    _permission: 'administer migrate batch'
+
+migrate_batch.admin_set:
+  path: '/admin/content/migrate/batch-states/{migrationId}/set/{offset}'
+  defaults:
+    _controller: '\Drupal\migrate_batch\Controller\MigrateBatchController::set'
+    _title: 'Set Batch Offset'
+  requirements:
+    _permission: 'administer migrate batch'

@@ -1,0 +1,6 @@
+migrate_batch.admin_states:
+  title: 'Migrate Batch States'
+  description: 'View and manage migrate batch processing states'
+  parent: system.admin_content
+  route_name: migrate_batch.admin_states
+  weight: 5
