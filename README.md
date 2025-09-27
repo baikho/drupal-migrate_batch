@@ -68,8 +68,11 @@ $batch->resetOffset('my_migration');
 
 **In a custom module:**
 ```php
-// In your .module file or service
-function mymodule_cron() {
+/**
+ * Implements hook_cron().
+ */
+#[Hook('cron')]
+public function cron(): void {
   /** @var \Drupal\migrate_batch\Service\MigrateBatchService $batch */
   $batch = \Drupal::service('migrate_batch');
   // Process 100 items per cron run.
