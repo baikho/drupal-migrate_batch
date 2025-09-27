@@ -82,7 +82,7 @@ public function cron(): void {
 
 **In a controller or form submit:**
 ```php
-public function processBatch() {
+public function processBatch(): void {
   /** @var \Drupal\migrate_batch\Service\MigrateBatchService $batch */
   $batch = \Drupal::service('migrate_batch');
   $batch->next('user_import', 50);
