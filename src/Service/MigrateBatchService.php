@@ -64,13 +64,18 @@ class MigrateBatchService {
     $limit = $limit ?? $this->defaultLimit;
 
     // Instantiate a sliced migration with source config directly.
-    (new MigrateExecutable($this->migrationManager->createInstance($migrationId, [
+    /** @var \Drupal\migrate\Plugin\MigrationInterface $migration */
+    $migration = $this->migrationManager->createInstance($migrationId, [
       'source' => [
         'batch_offset' => $offset,
         'batch_limit' => $limit,
         'batch_request' => TRUE,
       ],
-    ])))->import();
+    ]);
+    // Prepare update.
+    $migration->getIdMap()->prepareUpdate();
+    // Run import.
+    (new MigrateExecutable($migration))->import();
 
     // Now fetch the total count from the migration.
     $newOffset = $offset + $limit;
