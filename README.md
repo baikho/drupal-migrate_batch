@@ -49,7 +49,7 @@ $batch->resetOffset('my_migration');
 
 #### Service API Reference
 
-- **`next(string $migrationId, int $batchSize = 50): void`**
+- **`next(string $migrationId, ?int $limit = NULL): void`**
   Processes the next batch of items for the specified migration.
 
 - **`getOffset(string $migrationId): int`**
