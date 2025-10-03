@@ -46,20 +46,31 @@ final class MigrateBatchCommands extends DrushCommands {
    */
   #[CLI\Command(name: 'migrate:batch-next', aliases: ['mbn', 'migrate-batch-next'])]
   #[CLI\Argument(name: 'migrationId', description: 'The migration ID to process')]
-  #[CLI\Argument(name: 'limit', description: 'Number of items per batch')]
-  public function batch(string $migrationId, ?int $limit = NULL): void {
-    $limit = $limit ?? $this->migrateBatchService->getDefaultLimit();
-    $this->io()->info(dt('Processing migration "@migration" with batch size @limit', [
+  #[CLI\Option(name: 'limit', description: 'Number of items per batch')]
+  #[CLI\Option(name: 'offset', description: 'Offset to start processing from')]
+  public function batch(string $migrationId, $options = ['limit' => NULL, 'offset' => NULL]): void {
+    $limit = $options['limit'] ?? $this->migrateBatchService->getDefaultLimit();
+    $offset = $options['offset'];
+
+    $message = 'Processing migration "@migration" with batch size @limit';
+    $params = [
       '@migration' => $migrationId,
       '@limit' => $limit,
-    ]));
+    ];
+
+    if ($offset !== NULL) {
+      $message .= ' starting from offset @offset';
+      $params['@offset'] = $offset;
+    }
+
+    $this->io()->info(dt($message, $params));
 
     try {
-      $this->migrateBatchService->next($migrationId, $limit);
-      $offset = $this->migrateBatchService->getOffset($migrationId);
-      $this->io()->success(dt('Batch processed. Updated offset for "@migration": @offset', [
+      $this->migrateBatchService->next($migrationId, $limit, $offset);
+      $currentOffset = $this->migrateBatchService->getOffset($migrationId);
+      $this->io()->success(dt('Batch processed. Current offset for "@migration": @offset', [
         '@migration' => $migrationId,
-        '@offset' => $offset,
+        '@offset' => $currentOffset,
       ]));
     }
     catch (\Exception $e) {

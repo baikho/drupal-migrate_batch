@@ -57,10 +57,12 @@ class MigrateBatchService {
    *   The migration ID.
    * @param int|null $limit
    *   The batch limit.
+   * @param int|null $offset
+   *   The offset to start from. If NULL, uses the current stored offset.
    */
-  public function next(string $migrationId, ?int $limit = NULL): void {
-    // Load current offset from state.
-    $offset = $this->getOffset($migrationId);
+  public function next(string $migrationId, ?int $limit = NULL, ?int $offset = NULL): void {
+    // Load current offset from state or use provided offset.
+    $offset = $offset ?? $this->getOffset($migrationId);
     $limit = $limit ?? $this->defaultLimit;
 
     // Instantiate a sliced migration with source config directly.

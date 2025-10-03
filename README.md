@@ -34,6 +34,9 @@ $batch->next('my_migration');
 // Process next batch of 50 items.
 $batch->next('my_migration', 50);
 
+// Process 50 items starting from offset 100.
+$batch->next('my_migration', 50, 100);
+
 // Check current offset.
 $offset = $batch->getOffset('my_migration');
 echo "Current offset: $offset";
@@ -49,8 +52,8 @@ $batch->resetOffset('my_migration');
 
 #### Service API Reference
 
-- **`next(string $migrationId, ?int $limit = NULL): void`**
-  Processes the next batch of items for the specified migration.
+- **`next(string $migrationId, ?int $limit = NULL, ?int $offset = NULL): void`**
+  Processes the next batch of items for the specified migration. If offset is provided, starts from that offset instead of the stored offset.
 
 - **`getOffset(string $migrationId): int`**
   Returns the current offset for a migration.
@@ -114,7 +117,13 @@ Process items in batches with automatic offset tracking:
 drush migrate:batch-next my_migration
 
 # Run again to process the next 50 items in sequence
-drush migrate:batch-next my_migration 50
+drush migrate:batch-next my_migration --limit=50
+
+# Process 500 items starting from the current offset
+drush migrate:batch-next my_migration --limit=500
+
+# Process 500 items starting from offset 20
+drush migrate:batch-next my_migration --limit=500 --offset=20
 ```
 
 ### Manual Offset Control
@@ -124,10 +133,10 @@ Override the stored offset when needed by resetting and running multiple batches
 ```bash
 # Reset offset to 0, then process first 25 items
 drush migrate:batch-offset:reset my_migration
-drush migrate:batch-next my_migration 25
+drush migrate:batch-next my_migration --limit=25
 
-# Process next 15 items (items 25-40)
-drush migrate:batch-next my_migration 25
+# Process next 25 items (items 25-50)
+drush migrate:batch-next my_migration --limit=25
 ```
 
 ### Offset Management
